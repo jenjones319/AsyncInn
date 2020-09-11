@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using ASyncInn.Models;
+using ASyncInn.Services;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using ASyncInn.Data;
-using ASyncInn.Models;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace ASyncInn.Controllers
 {
@@ -14,40 +10,45 @@ namespace ASyncInn.Controllers
     [ApiController]
     public class RoomsController : ControllerBase
     {
-        private readonly IRoomRepository repository;
-        public RoomsController(IRoomRepository repository, AsyncInnDbContext context)
-        {
-            this.repository = repository;
-        }
+        private readonly IRoomsRepository RoomsRepository;
+
+        public RoomsController(IRoomsRepository repository) => this.RoomsRepository = repository;
 
         // GET: api/Rooms
         [HttpGet]
         public async Task<IEnumerable<Room>> GetRooms()
         {
-            return await repository.GetAllAsync();
+            return (IEnumerable<Room>)await RoomsRepository.GetAllAsync();
         }
 
         // GET: api/Rooms/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Room>> GetRoom(int id)
+        public async Task<ActionResult<Room>> GetRoom(long id)
         {
-            return await repository.GetOneByIdAsync(id);
+            var room = await RoomsRepository.GetOneByIdAsync(id);
+
+            if (room == null)
+            {
+                return NotFound();
+            }
+
+            return room;
         }
 
         // PUT: api/Rooms/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutRoom(int id, Room room)
+        public async Task<IActionResult> PutRoom(long id, Room room)
         {
             if (id != room.Id)
             {
                 return BadRequest();
             }
 
-            bool didUpdate = await repository.UpdateAsync(room);
+            bool didUpdate = await RoomsRepository.UpdateAsync(room);
 
-            if (didUpdate == false)
+            if (!didUpdate)
             {
                 return NotFound();
             }
@@ -61,16 +62,16 @@ namespace ASyncInn.Controllers
         [HttpPost]
         public async Task<ActionResult<Room>> PostRoom(Room room)
         {
-            await repository.CreateAsync(room);
+            await RoomsRepository.CreateAsync(room);
 
             return CreatedAtAction("GetRoom", new { id = room.Id }, room);
         }
 
         // DELETE: api/Rooms/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Room>> DeleteRoom(int id)
+        public async Task<ActionResult<Room>> DeleteRoom(long id)
         {
-            var room = await repository.DeleteAsync(id);
+            Room room = await RoomsRepository.DeleteAsync(id);
 
             if (room == null)
             {
@@ -79,7 +80,5 @@ namespace ASyncInn.Controllers
 
             return room;
         }
-
-
     }
 }

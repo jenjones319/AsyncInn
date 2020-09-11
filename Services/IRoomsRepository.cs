@@ -1,11 +1,15 @@
-﻿using System;
+﻿using ASyncInn.Models;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace ASyncInn.Services
 {
-    interface IRoomsRepository
+    public interface IRoomsRepository
     {
+        Task<IEnumerable<Room>> GetAllAsync();
+        Task<Room> GetOneByIdAsync(long id);
+        Task CreateAsync(Room room);
+        Task<Room> DeleteAsync(long id);
+        Task<bool> UpdateAsync(Room room);
     }
 }
