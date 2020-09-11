@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace ASyncInn.Models
+﻿namespace ASyncInn.Models
 {
     public class Room
     {
+        public long Id { get; set; }
+        public string Name { get; set; }
+        public string Layout { get; set; }
+        public string Amenities { get; set; }
+
     }
 }
