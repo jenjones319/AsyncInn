@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using ASyncInn.Models;
+using ASyncInn.Services;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using ASyncInn.Data;
-using ASyncInn.Models;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace ASyncInn.Controllers
 {
@@ -14,25 +10,22 @@ namespace ASyncInn.Controllers
     [ApiController]
     public class RoomsController : ControllerBase
     {
-        private readonly AsyncInnDbContext _context;
+        private readonly IRoomsRepository RoomsRepository;
 
-        public RoomsController(AsyncInnDbContext context)
-        {
-            _context = context;
-        }
+        public RoomsController(IRoomsRepository repository) => this.RoomsRepository = repository;
 
         // GET: api/Rooms
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Room>>> GetRooms()
+        public async Task<IEnumerable<Room>> GetRooms()
         {
-            return await _context.Rooms.ToListAsync();
+            return (IEnumerable<Room>)await RoomsRepository.GetAllAsync();
         }
 
         // GET: api/Rooms/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Room>> GetRoom(long id)
         {
-            var room = await _context.Rooms.FindAsync(id);
+            var room = await RoomsRepository.GetOneByIdAsync(id);
 
             if (room == null)
             {
@@ -53,22 +46,11 @@ namespace ASyncInn.Controllers
                 return BadRequest();
             }
 
-            _context.Entry(room).State = EntityState.Modified;
+            bool didUpdate = await RoomsRepository.UpdateAsync(room);
 
-            try
+            if (!didUpdate)
             {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!RoomExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                return NotFound();
             }
 
             return NoContent();
@@ -80,8 +62,7 @@ namespace ASyncInn.Controllers
         [HttpPost]
         public async Task<ActionResult<Room>> PostRoom(Room room)
         {
-            _context.Rooms.Add(room);
-            await _context.SaveChangesAsync();
+            await RoomsRepository.CreateAsync(room);
 
             return CreatedAtAction("GetRoom", new { id = room.Id }, room);
         }
@@ -90,21 +71,14 @@ namespace ASyncInn.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult<Room>> DeleteRoom(long id)
         {
-            var room = await _context.Rooms.FindAsync(id);
+            Room room = await RoomsRepository.DeleteAsync(id);
+
             if (room == null)
             {
                 return NotFound();
             }
 
-            _context.Rooms.Remove(room);
-            await _context.SaveChangesAsync();
-
             return room;
-        }
-
-        private bool RoomExists(long id)
-        {
-            return _context.Rooms.Any(e => e.Id == id);
         }
     }
 }
