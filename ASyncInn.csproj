@@ -5,6 +5,10 @@
 		<UserSecretsId>aa26883c-a921-4601-9f8b-156793be5ffb</UserSecretsId>
 	</PropertyGroup>
 	<ItemGroup>
+		<Compile Remove="Migrations\20200911200642_addSeededData.cs" />
+		<Compile Remove="Migrations\20200911200642_addSeededData.Designer.cs" />
+	</ItemGroup>
+	<ItemGroup>
 		<PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.8" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.8">
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
