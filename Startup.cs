@@ -22,7 +22,7 @@ namespace ASyncInn
         {
             services.AddDbContext<AsyncInnDbContext>(options =>
             {
-                string connectionString = Configuration.GetConnectionString("Default Connection");
+                string connectionString = Configuration.GetConnectionString("DefaultConnection");
                 options.UseSqlServer(connectionString);
             });
         }

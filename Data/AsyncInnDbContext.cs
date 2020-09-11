@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using ASyncInn.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace ASyncInn.Data
 {
@@ -7,5 +8,8 @@ namespace ASyncInn.Data
         public AsyncInnDbContext(DbContextOptions options) : base(options)
         {
         }
+
+        public DbSet<Hotel> Hotels { get; set; }
+
     }
 }
