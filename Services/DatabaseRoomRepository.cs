@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Web.Services
+namespace ASyncInn.Services
 {
     public class DatabaseRoomRepository : IRoomsRepository
     {
@@ -70,9 +70,5 @@ namespace Web.Services
         {
             return await _context.Rooms.AnyAsync(e => e.Id == id);
         }
-    }
-
-    public interface IRoomsRepository
-    {
     }
 }
