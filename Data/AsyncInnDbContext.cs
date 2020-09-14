@@ -21,9 +21,9 @@ namespace ASyncInn.Data
                 );
             modelBuilder.Entity<Room>()
                 .HasData(
-                    new Room { Id = 1, Name = "Studio", Layout = "0br." },
-                    new Room { Id = 2, Name = "OneBdr", Layout = "1br." },
-                    new Room { Id = 3, Name = "TwoBdr", Layout = "2br." }
+                    new Room { Id = 1, Name = "Studio", Layout = "0br" },
+                    new Room { Id = 2, Name = "OneBdr", Layout = "1br" },
+                    new Room { Id = 3, Name = "TwoBdr", Layout = "2br" }
                 );
             modelBuilder.Entity<Amenity>()
                  .HasData(
@@ -31,11 +31,14 @@ namespace ASyncInn.Data
                     new Amenity { Id = 2, Name = "Wireless" },
                     new Amenity { Id = 3, Name = "Coffee Maker" }
                 );
+            modelBuilder.Entity<HotelRoom>()
+                .HasKey()
         }
 
         public DbSet<Hotel> Hotels { get; set; }
         public DbSet<Room> Rooms { get; set; }
         public DbSet<Amenity> Amenities { get; set; }
+        public DbSet<HotelRoom> HotelRooms { get; set; }
 
     }
 }
