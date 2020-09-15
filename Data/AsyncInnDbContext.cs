@@ -31,17 +31,18 @@ namespace ASyncInn.Data
                     new Amenity { Id = 2, Name = "Wireless" },
                     new Amenity { Id = 3, Name = "Coffee Maker" }
                 );
-            modelBuilder.Entity<HotelRoom>()
-                .HasKey();
-
             modelBuilder.Entity<RoomAmenity>()
-                .HasKey();
+                    .HasKey(roomAmenity => new
+                    {
+                        roomAmenity.AmenityId,
+                        roomAmenity.RoomId,
+                    }
+                    );
         }
 
         public DbSet<Hotel> Hotels { get; set; }
         public DbSet<Room> Rooms { get; set; }
         public DbSet<Amenity> Amenities { get; set; }
-        public DbSet<HotelRoom> HotelRooms { get; set; }
         public DbSet<RoomAmenity> RoomAmenities { get; set; }
 
     }

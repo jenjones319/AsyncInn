@@ -1,8 +1,14 @@
-﻿namespace ASyncInn.Models
+﻿using AsyncInn.Models;
+
+namespace ASyncInn.Models
 {
     public class RoomAmenity
     {
-        public long AmenitiesId { get; set; }
+        public long AmenityId { get; set; }
         public long RoomId { get; set; }
+
+        public Amenity Amenity { get; set; }
+
+        public Room Room { get; set; }
     }
 }

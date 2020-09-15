@@ -1,12 +1,11 @@
-﻿using System;
+﻿using AsyncInn.Models;
+using ASyncInn.Data;
+using ASyncInn.Services;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using ASyncInn.Data;
-using AsyncInn.Models;
 
 namespace ASyncInn.Controllers
 {
@@ -15,10 +14,12 @@ namespace ASyncInn.Controllers
     public class AmenitiesController : ControllerBase
     {
         private readonly AsyncInnDbContext _context;
+        private readonly IAmenityRepository repository;
 
-        public AmenitiesController(AsyncInnDbContext context)
+        public AmenitiesController(AsyncInnDbContext context, IAmenityRepository repository)
         {
             _context = context;
+            this.repository = repository;
         }
 
         // GET: api/Amenities
@@ -105,6 +106,19 @@ namespace ASyncInn.Controllers
         private bool AmenityExists(long id)
         {
             return _context.Amenities.Any(e => e.Id == id);
+        }
+
+        [HttpPost("{roomId}/Amenity/{amenityId}")]
+        public async Task<ActionResult<Amenity>> AddAmenityToRoom(long roomId, long amenityId)
+        {
+            await repository.AddAmenityToRoom(roomId, amenityId);
+            return CreatedAtAction(nameof(AddAmenityToRoom), new { roomId, amenityId }, null);
+        }
+        [HttpDelete("{roomId}/Amenity/{amenityId}")]
+        public async Task<ActionResult<Amenity>> DeleteAmenityFromRoom(long roomId, long amenityId)
+        {
+            await repository.DeleteAmenityFromRoom(roomId, amenityId);
+            return Ok();
         }
     }
 }
