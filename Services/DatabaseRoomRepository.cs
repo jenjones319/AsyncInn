@@ -70,5 +70,15 @@ namespace ASyncInn.Services
         {
             return await _context.Rooms.AnyAsync(e => e.Id == id);
         }
+
+        public Task DeleteAmenityFromRoom(long roomId, long amenityId)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public Task AddAmenityToRoom(long roomId, long amenityId)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

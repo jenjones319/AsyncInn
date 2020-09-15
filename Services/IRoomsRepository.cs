@@ -11,5 +11,7 @@ namespace ASyncInn.Services
         Task CreateAsync(Room room);
         Task<Room> DeleteAsync(long id);
         Task<bool> UpdateAsync(Room room);
+        Task DeleteAmenityFromRoom(long roomId, long amenityId);
+        Task AddAmenityToRoom(long roomId, long amenityId);
     }
 }

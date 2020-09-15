@@ -1,4 +1,5 @@
-﻿using ASyncInn.Models;
+﻿using AsyncInn.Models;
+using ASyncInn.Models;
 using ASyncInn.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -79,6 +80,18 @@ namespace ASyncInn.Controllers
             }
 
             return room;
+        }
+        [HttpPost("{roomId}/Amenity/{amenityId}")]
+        public async Task<ActionResult<Amenity>> AddAmenityToRoom(long roomId, long amenityId)
+        {
+            await RoomsRepository.AddAmenityToRoom(roomId, amenityId);
+            return CreatedAtAction(nameof(AddAmenityToRoom), new { roomId, amenityId }, null);
+        }
+        [HttpDelete("{roomId}/Amenity/{amenityId}")]
+        public async Task<ActionResult<Amenity>> DeleteAmenityFromRoom(long roomId, long amenityId)
+        {
+            await RoomsRepository.DeleteAmenityFromRoom(roomId, amenityId);
+            return Ok();
         }
     }
 }

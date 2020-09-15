@@ -107,18 +107,5 @@ namespace ASyncInn.Controllers
         {
             return _context.Amenities.Any(e => e.Id == id);
         }
-
-        [HttpPost("{roomId}/Amenity/{amenityId}")]
-        public async Task<ActionResult<Amenity>> AddAmenityToRoom(long roomId, long amenityId)
-        {
-            await repository.AddAmenityToRoom(roomId, amenityId);
-            return CreatedAtAction(nameof(AddAmenityToRoom), new { roomId, amenityId }, null);
-        }
-        [HttpDelete("{roomId}/Amenity/{amenityId}")]
-        public async Task<ActionResult<Amenity>> DeleteAmenityFromRoom(long roomId, long amenityId)
-        {
-            await repository.DeleteAmenityFromRoom(roomId, amenityId);
-            return Ok();
-        }
     }
 }
