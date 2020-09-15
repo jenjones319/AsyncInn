@@ -14,6 +14,8 @@ namespace ASyncInn.Services
         Task CreateAmenity(Amenity amenity);
 
         Task<Amenity> DeleteOneAmenityById(long id);
+        Task DeleteAmenityFromRoom(long roomId, long amenityId);
+        Task AddAmenityToRoom(long roomId, long amenityId);
     }
 
     public class DatabaseAmenityRepository : IAmenityRepository
@@ -25,13 +27,18 @@ namespace ASyncInn.Services
             _context = context;
         }
 
+        public Task AddAmenityToRoom(long roomId, long amenityId)
+        {
+            throw new System.NotImplementedException();
+        }
+
         public async Task CreateAmenity(Amenity amenity)
         {
             _context.Amenities.Add(amenity);
             await _context.SaveChangesAsync();
         }
 
-        public async Task<Amenity> DeleteOneAmenityById(long id)
+        public async Task<Amenity> DeleteAmenityById(long id)
         {
             var amenity = await _context.Amenities.FindAsync(id);
 
@@ -44,6 +51,16 @@ namespace ASyncInn.Services
             await _context.SaveChangesAsync();
 
             return amenity;
+        }
+
+        public Task DeleteAmenityFromRoom(long roomId, long amenityId)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public Task<Amenity> DeleteOneAmenityById(long id)
+        {
+            throw new System.NotImplementedException();
         }
 
         public async Task<IEnumerable<Amenity>> GetAllAmenities()
