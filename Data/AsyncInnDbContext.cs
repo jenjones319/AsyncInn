@@ -1,10 +1,12 @@
 ﻿using AsyncInn.Models;
 using ASyncInn.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Web.Models;
 
 namespace ASyncInn.Data
 {
-    public class AsyncInnDbContext : DbContext
+    public class AsyncInnDbContext : IdentityDbContext<ApplicationUsers>
     {
         public AsyncInnDbContext(DbContextOptions options) : base(options)
         {
